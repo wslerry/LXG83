@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import os
 import sys
+import re
 from datetime import timedelta, datetime
 import logging
 import logging.handlers
@@ -40,13 +41,18 @@ class MigrationLog:
 
         if os.path.isdir(self.dir):
             pass
+            # shutil.rmtree(self.dir)
+            # os.mkdir(self.dir)
         else:
             os.mkdir(self.dir)
-        now = datetime.today().strftime("%Y%m%d%H%M%S")
 
-        self.file = os.path.join(self.dir, "sde2gdb_%s.log" % now)
+        # now = datetime.today().strftime("%Y%m%d%H%M%S")
+        # self.file = os.path.join(self.dir, "sde2gdb_%s.log" % now)
+        self.file = os.path.join(self.dir, "sde2gdb.log")
+        if os.path.isfile(self.file):
+            os.remove(self.file)
 
-    def __repr__(self):
+    def create(self):
         logger = logging.getLogger("MIGRATION")
         handler = LXGLogging(
             self.file,
@@ -67,14 +73,18 @@ class ReplicationLog:
 
         if os.path.isdir(self.dir):
             pass
+            # shutil.rmtree(self.dir)
+            # os.mkdir(self.dir)
         else:
             os.mkdir(self.dir)
 
-        now = datetime.today().strftime("%Y%m%d%H%M%S")
+        # now = datetime.today().strftime("%Y%m%d%H%M%S")
+        # self.file = os.path.join(self.dir, "gdb2sde_%s.log" % now)
+        self.file = os.path.join(self.dir, "gdb2sde.log")
+        if os.path.isfile(self.file):
+            os.remove(self.file)
 
-        self.file = os.path.join(self.dir, "gdb2sde_%s.log" % now)
-
-    def __repr__(self):
+    def create(self):
         logger = logging.getLogger("REPLICATION")
         handler = LXGLogging(
             self.file,
@@ -129,3 +139,8 @@ def processtime(seconds):
     converted_time = str(conversion)
 
     return converted_time
+
+
+def is_valid_ip(ip):
+    m = re.match(r"^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$", ip)
+    return bool(m) and all(map(lambda n: 0 <= int(n) <= 255, m.groups()))

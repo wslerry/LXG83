@@ -1,15 +1,13 @@
 import os
 import sys
 import re
-from .utils import progressbar
+from .utils import progressbar, is_valid_ip
 
 
 if os.path.isdir(r"C:\Program Files (x86)\ArcGIS\Bin"):
-    pass
+    sys.path.append(r"C:\Program Files (x86)\ArcGIS\Bin")
 else:
     sys.exit("LXG83 requires ArcMAP 9.3 to be installed")
-
-sys.path.append(r"C:\Program Files (x86)\ArcGIS\Bin")
 
 import arcgisscripting
 gp = arcgisscripting.create()
@@ -17,6 +15,7 @@ gp93 = arcgisscripting.create(9.3)
 
 ROOT = os.path.dirname(os.path.realpath(__file__))
 
+_prj = os.path.join(ROOT, "assets", "projection", "BRSO_4.prj")
 
 def new_name(target_string, old_name):
     return old_name.replace(target_string, "", 1)
@@ -31,7 +30,8 @@ class SDE2GDB:
     Example:
         SDE2GDB()
     """
-    def __init__(self, sde_connection, out_directory, gdb_name, projection_file, division, target_string, suffix):
+    def __init__(self, sde_connection, out_directory, gdb_name,
+                 projection_file, division, target_string, suffix):
         self.sde = sde_connection
         self.out_dir = out_directory
         self.gdb_name = gdb_name
@@ -39,6 +39,33 @@ class SDE2GDB:
         self.division = division
         self.tgt_str = target_string
         self.suffix = suffix
+
+        _, source_ext = os.path.splitext(self.sde)
+
+        if source_ext == '.mdb' or source_ext == '.MDB':
+            src = self.sde
+            if not gp.Exists(src):
+                sys.exit('MDB not exist')
+            else:
+                pass
+        else:
+            if is_valid_ip(self.sde) is True:
+                pass
+            else:
+                sys.exit('Invalid IP')
+
+            src = os.path.join(os.environ['USERPROFILE'],
+                               'AppData\\Roaming\\ESRI\\ArcCatalog',
+                               "Connection to %s.sde" % self.sde)
+            if not gp.Exists(src):
+                sys.exit('SDE not exist')
+            else:
+                pass
+
+        if os.path.splitext(self.gdb_name)[1] != '.gdb':
+            self.gdb_name = gdb_name + '.gdb'
+        else:
+            pass
 
         if not self.division or self.division == "":
             targetstring = "%s" % self.tgt_str
@@ -60,11 +87,11 @@ class SDE2GDB:
             if ext == '.gdb':
                 gp.CreateFileGDB_management(self.out_dir, self.gdb_name)
 
-        gp.workspace = self.sde
+        gp.workspace = src
 
         datasets = gp93.ListDatasets("", "feature")
         pbar = progressbar(datasets, prefix='SDE2GDB :')
-        _, source_ext = os.path.splitext(self.sde)
+
         if source_ext == '.sde' or source_ext == '.SDE':
             for ds in pbar:
                 if re.search(targetstring, ds):
@@ -95,7 +122,7 @@ class SDE2GDB:
                         gp.AddError(Exception)
 
         params = {
-            "migrated_geodatabase": output_personal_gdb,
+            "migrated_gdb": output_personal_gdb,
             "suffix": '' if not self.suffix or self.suffix == "" else '%s_' % self.suffix,
             "division": self.division
         }
@@ -159,3 +186,4 @@ class CheckGDB:
                     except Exception:
                         gp.GetMessages(2)
                         gp.AddError(Exception)
+
