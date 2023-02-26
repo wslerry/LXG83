@@ -44,7 +44,7 @@ class MigrationLog:
             os.mkdir(self.dir)
         now = datetime.today().strftime("%Y%m%d%H%M%S")
 
-        self.file = os.join.path(self.dir, "sde2gdb_%s.log" % now)
+        self.file = os.path.join(self.dir, "sde2gdb_%s.log" % now)
 
     def __repr__(self):
         logger = logging.getLogger("MIGRATION")
@@ -72,7 +72,7 @@ class ReplicationLog:
 
         now = datetime.today().strftime("%Y%m%d%H%M%S")
 
-        self.file = os.join.path(self.dir, "gdb2sde_%s.log" % now)
+        self.file = os.path.join(self.dir, "gdb2sde_%s.log" % now)
 
     def __repr__(self):
         logger = logging.getLogger("REPLICATION")
