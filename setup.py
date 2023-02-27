@@ -1,6 +1,4 @@
 import setuptools
-from distutils.core import setup, Extension
-from distutils.command.build_py import build_py
 
 fh = open('README.md', 'r')
 long_description = fh.read()
