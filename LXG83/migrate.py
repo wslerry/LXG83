@@ -72,6 +72,9 @@ class SDE2GDB:
         else:
             targetstring = "%s_%s" % (self.division, self.tgt_str)
 
+        if not self.crs or self.crs == "":
+            self.crs = _prj
+
         output_personal_gdb = os.path.join(self.out_dir, self.gdb_name)
 
         try:
@@ -161,10 +164,10 @@ class CheckGDB:
                 # this part will rename 'graticles' to 'graticules' featureClass
                 if featname == '%s%s_Map_Graticles_1K' % (self.suffix, division):
                     gp.rename(featname, '%s%s_Map_Graticules_1K' % (self.suffix, self.div))
-                    # featname = suffix+'%s_Map_Graticules_1K' % self.div
+                    featname = suffix+'%s_Map_Graticules_1K' % self.div
                 elif featname == '%s%s_Map_Graticles_5K' % (self.suffix, division):
                     gp.rename(featname, '%s%s_Map_Graticules_5K' % (self.suffix, self.div))
-                    # featname = suffix+'%s_Map_Graticules_5K' % self.div
+                    featname = suffix+'%s_Map_Graticules_5K' % self.div
                 else:
                     pass
 
