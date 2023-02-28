@@ -2,4 +2,6 @@
 test
 log
 
+*.bat
+mdb2gdb.py
 test.py

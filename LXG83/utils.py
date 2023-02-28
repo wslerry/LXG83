@@ -144,3 +144,7 @@ def processtime(seconds):
 def is_valid_ip(ip):
     m = re.match(r"^(\d{1,3})\.(\d{1,3})\.(\d{1,3})\.(\d{1,3})$", ip)
     return bool(m) and all(map(lambda n: 0 <= int(n) <= 255, m.groups()))
+
+
+def app_version():
+    return "2.0.0"

@@ -1,22 +1,29 @@
 import setuptools
-
-fh = open('README.md', 'r')
-long_description = fh.read()
+from LXG83 import app_version
 
 setuptools.setup(
     name='LXG83',
-    version='2.0.0',
-    author='Lerry William Seling',
+    version=app_version,
+    author='Lerry William',
     description='Data migration application for ArcMap',
-    long_description=long_description,
-    long_description_content_type='text/markdown',
-    url='',
-    packages=setuptools.find_packages(),
-    package_data={'LXG83': ['README.md', 'assets/projection/*', 'assets/workspace/*']},
-    classifiers=(
-        'Programming Language :: Python :: 2.5',
-        "License :: OSI Approved :: MIT License",
-        'Operating System :: OS Independent',
-    ),
-    install_requires=[]
+    long_description="""
+    LXG83 make it easier to migrate SDE to file geodatabase.
+    """,
+    # packages=['LXG83',
+    #           'LXG83.migrate',
+    #           'LXG83.replicate',
+    #           'LXG83.utils'
+    #           ],
+    # package_data={'LXG83': ['README.md', 'assets/projection/*', 'assets/workspace/*']},
+    # package_dir={'LXG83': ''},
+    # classifiers=(
+    #     "Development Status :: 5 - Production/Stable",
+    #     "Intended Audience :: Developers",
+    #     "License :: OSI Approved :: Python Software Foundation License",
+    #     "Operating System :: OS Independent",
+    #     "Programming Language :: Python",
+    #     "Topic :: Software Development :: GIS",
+    #     "Topic :: Software Development :: Arcgis 9.3",
+    #     "Topic :: Software Development :: Libraries :: Python Modules"
+    # )
 )
