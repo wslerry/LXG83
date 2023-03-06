@@ -3,5 +3,6 @@ test
 log
 
 *.bat
+*.sh
 mdb2gdb.py
 test.py
