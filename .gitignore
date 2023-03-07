@@ -1,5 +1,6 @@
 .idea
 test
+temp
 log
 build
 dist
@@ -8,6 +9,5 @@ dist
 
 *.bat
 *.sh
-mdb2gdb.py
-sde2gdb.py
-test.py
+*.zip
+*.7z
