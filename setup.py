@@ -1,21 +1,22 @@
-from setuptools import setup
-from LXG83 import app_version
+from setuptools import setup, find_packages
+import LXG83
+
+
+package_data = {
+    '': ['*.prj', '*.XML']
+}
 
 setup(
     name='LXG83',
-    version=app_version,
+    version=str(LXG83.__version__),
     author='Lerry William',
+    author_email="lerryws@sains.com.my",
     description='Data migration application for ArcMap',
-    # long_description="""
-    # LXG83 make it easier to migrate SDE to file geodatabase.
-    # """,
-    packages=['LXG83',
-              'LXG83.migrate',
-              'LXG83.replicate',
-              'LXG83.utils'
-              ],
-    package_data={'LXG83': ['README.md', 'assets/projection/BRSO_4.prj', 'assets/workspace/*.XML']},
-    package_dir={'LXG83': ''},
+    long_description="""
+    LXG83 make it easier to migrate SDE to file geodatabase.
+    """,
+    packages=find_packages(),
+    package_data=package_data,
     classifiers=(
         "Development Status :: 1",
         "Intended Audience :: Developers",

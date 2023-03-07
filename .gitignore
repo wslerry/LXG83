@@ -2,6 +2,11 @@
 test
 log
 scripts
+build
+dist
+*.egg-info
+
+
 *.bat
 *.sh
 mdb2gdb.py

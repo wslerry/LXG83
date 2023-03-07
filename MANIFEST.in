@@ -1,0 +1,4 @@
+include README.md
+graft LXG83
+recursive-exclude * *.py[co]
+recursive-include LXG83/assets/**/* *.XML *.prj
