@@ -147,4 +147,4 @@ def is_valid_ip(ip):
 
 
 def app_version():
-    return "2.0.0"
+    return str("2.0.0")

@@ -1,7 +1,7 @@
 .idea
 test
 log
-
+scripts
 *.bat
 *.sh
 mdb2gdb.py
