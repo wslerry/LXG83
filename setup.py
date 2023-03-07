@@ -1,14 +1,16 @@
 import setuptools
+from setuptools import setup
 from LXG83 import app_version
 
-setuptools.setup(
+setup(
     name='LXG83',
     version=app_version,
     author='Lerry William',
     description='Data migration application for ArcMap',
-    long_description="""
-    LXG83 make it easier to migrate SDE to file geodatabase.
-    """,
+    # long_description="""
+    # LXG83 make it easier to migrate SDE to file geodatabase.
+    # """,
+    packa
     # packages=['LXG83',
     #           'LXG83.migrate',
     #           'LXG83.replicate',

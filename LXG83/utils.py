@@ -3,6 +3,7 @@ import os
 import sys
 import re
 from datetime import timedelta, datetime
+import time
 import logging
 import logging.handlers
 
@@ -99,30 +100,29 @@ class ReplicationLog:
         return logger
 
 
-def progressbar(iterable, prefix='', suffix='', length=100, fill='#'):
+def progressbar(iterable, prefix='', suffix='', length=50, fill='#'):
     """
     Call in a loop to create terminal progress bar
     @params:
         iterable    - Required  : iterable object (Iterable)
         prefix      - Optional  : prefix string (Str)
         suffix      - Optional  : suffix string (Str)
-        decimals    - Optional  : positive number of decimals in percent complete (Int)
         length      - Optional  : character length of bar (Int)
         fill        - Optional  : bar fill character (Str)
     """
     total = len(iterable)
+
     # Progress Bar Printing Function
-    def printProgressBar (iteration):
+    def printProgressBar(iteration):
         if iteration != 0:
             iter_per_total = iteration / float(total)
         else:
             iter_per_total = 0
-        decimals = round(100 * iter_per_total, 2)
+        decimals = round(100 * iter_per_total, 0)
         percent = str(decimals)
         filledLength = int(length * iteration // total)
         bar = fill * filledLength + '.' * (length - filledLength)
-
-        print '\r%s |%s| %s%% %s ' % (prefix, bar, percent, suffix),
+        print '\r%s |%s| [%s/%s] %s%% %s ' % (prefix, bar, iteration, total, percent, suffix),
 
     # Initial Call
     printProgressBar(0)

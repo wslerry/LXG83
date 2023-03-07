@@ -5,4 +5,5 @@ log
 *.bat
 *.sh
 mdb2gdb.py
+sde2gdb.py
 test.py
