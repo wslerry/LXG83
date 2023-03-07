@@ -5,18 +5,18 @@ path C:\Python25\DLLs;C:\Python25\Scripts;C:\Python25\Lib;C:\Python25;"C:\Progra
 REM ---------------------------------------
 REM 			!! ALERT !!
 REM 		  !! READ THIS !!
-REM         Change parameter here
+REM         Change these parameters
 REM sde_connection -> IP address to 8i SDE server. Set it first!
-REM output_folder -> Directory to save .GDB file
-REM division -> Query only selected division
+REM output_folder -> Directory to save *.GDB file
+REM division -> Query only selected division, eg. KCH
 REM lasis_type -> CMS, APIS, EIS, GAZETTE, PLIS, LAAS, LAND, VIS
 REM ---------------------------------------
 
 set "sde_connection=10.17.106.208"
 set "output_folder=C:\LXG\V2\LXG83\test"
-set "gdb_filename=HQ_GAZETTE.gdb"
-set "division=HQ"
-set "lasis_type=GAZETTE"
+set "gdb_filename=BTU_CMS.gdb"
+set "division=BTU"
+set "lasis_type=CMS"
 
 REM ---------------------------------------
 

@@ -5,8 +5,7 @@ path C:\Python25\DLLs;C:\Python25\Scripts;C:\Python25\Lib;C:\Python25;"C:\Progra
 REM ---------------------------------------
 REM 			!! ALERT !!
 REM 		  !! READ THIS !!
-REM         Change parameter here
-REM Bulk migrating MDB to GDB
+REM         Change these parameters
 REM mdbDir -> Directory of *.MDB files
 REM output_folder -> New directory for output GDB
 REM ---------------------------------------
