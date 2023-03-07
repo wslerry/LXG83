@@ -30,7 +30,9 @@ To install as python module
 
 or
 
-`pip install .` or `pip install -e .` for development
+`pip install .`
+
+or `pip install -e .` for development
 
 ## Usage
 
