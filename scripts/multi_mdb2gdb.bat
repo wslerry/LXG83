@@ -3,10 +3,12 @@ set PYTHONPATH=C:\Python25
 path C:\Python25\DLLs;C:\Python25\Scripts;C:\Python25\Lib;C:\Python25;"C:\Program Files (x86)\ArcGIS\bin";%path%
 
 REM ---------------------------------------
+REM 			!! ALERT !!
+REM 		  !! READ THIS !!
 REM         Change parameter here
 REM Bulk migrating MDB to GDB
-REM mdbDir - Directory of *.MDB files
-REM output_folder - New directory for output GDB
+REM mdbDir -> Directory of *.MDB files
+REM output_folder -> New directory for output GDB
 REM ---------------------------------------
 
 set "mdbDir=C:\Datasets\SMARTE~1"
