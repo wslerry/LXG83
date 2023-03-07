@@ -42,7 +42,6 @@ class SDE2GDB:
         self.prefix = prefix
         self.check = check_database
 
-    # def __call__(self):
         _, source_ext = os.path.splitext(self.sde)
 
         if source_ext == '.mdb' or source_ext == '.MDB':
@@ -68,10 +67,10 @@ class SDE2GDB:
             else:
                 pass
 
-        if os.path.splitext(self.gdb_name)[1] != '.gdb':
-            gdb_name = self.gdb_name + '.gdb'
-        else:
-            gdb_name = self.gdb_name
+        # if os.path.splitext(self.gdb_name)[1] != '.gdb':
+        #     gdb_name = self.gdb_name + '.gdb'
+        # else:
+        #     gdb_name = self.gdb_name
 
         if not self.division or self.division == "":
             targetstring = "%s" % self.tgt_str
@@ -81,7 +80,12 @@ class SDE2GDB:
         if not self.crs or self.crs == "":
             self.crs = _prj
 
-        output_personal_gdb = os.path.join(self.out_dir, gdb_name)
+        if os.path.isdir(self.out_dir):
+            pass
+        else:
+            os.mkdir(self.out_dir)
+
+        output_personal_gdb = os.path.join(self.out_dir, self.gdb_name)
 
         try:
             if gp.Exists(output_personal_gdb):
@@ -92,18 +96,18 @@ class SDE2GDB:
         if not gp.Exists(output_personal_gdb):
             _, ext = os.path.splitext(output_personal_gdb)
             if ext == '.mdb':
-                gp.CreatePersonalGDB_management(self.out_dir, gdb_name)
+                gp.CreatePersonalGDB_management(self.out_dir, self.gdb_name)
             if ext == '.gdb':
-                gp.CreateFileGDB_management(self.out_dir, gdb_name)
+                gp.CreateFileGDB_management(self.out_dir, self.gdb_name)
 
         gp.workspace = src
 
-        datasets = gp93.ListDatasets("*%s*" % self.tgt_str, "feature")
+        datasets = gp93.ListDatasets("*%s*" % targetstring, "feature")
         pbar = progressbar(datasets, prefix='SDE2GDB :')
 
         if source_ext == '.sde' or source_ext == '.SDE':
             for ds in pbar:
-                if re.search(self.tgt_str, ds):
+                if re.search(targetstring, ds):
                     if re.search('SDE.', ds):
                         if re.search('SDE.', ds):
                             dsname = '%s%s' % (self.prefix, new_name('SDE.', ds))
@@ -120,7 +124,7 @@ class SDE2GDB:
                             gp.AddError(Exception)
         else:
             for ds in pbar:
-                if re.search(self.tgt_str, ds):
+                if re.search(targetstring, ds):
                     dsname = gp.ValidateTableName(ds, output_personal_gdb)
                     dsname = '%s%s' % (self.prefix, dsname)
                     try:
@@ -201,15 +205,16 @@ class CheckGDB:
 
 
 class MDB2GDB:
-    def __init__(self, mdb_filename, out_directory, projection_file, division, target_string, prefix):
+    def __init__(self, mdb_filename, out_directory, projection_file,
+                 division, target_string, prefix, check_database=False):
         self.mdb = mdb_filename
         self.out_dir = out_directory
         self.crs = projection_file
         self.div = division
         self.tgt_str = target_string
         self.prefix = prefix
+        self.check = check_database
 
-    # def __call__(self):
         filename = os.path.splitext(os.path.basename(self.mdb))[0]
         gdb_name = filename + '.gdb'
         SDE2GDB(self.mdb,
@@ -218,5 +223,6 @@ class MDB2GDB:
                 self.crs,
                 self.div,
                 self.tgt_str,
-                self.prefix)
+                self.prefix,
+                self.check)
 

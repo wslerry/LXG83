@@ -1,7 +1,6 @@
 .idea
 test
 log
-scripts
 build
 dist
 *.egg-info
