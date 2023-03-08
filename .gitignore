@@ -6,7 +6,7 @@ build
 dist
 *.egg-info
 
-LXG/*.pyc
+LXG83/*.pyc
 
 *.bat
 *.sh
