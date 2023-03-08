@@ -67,11 +67,6 @@ class SDE2GDB:
             else:
                 pass
 
-        # if os.path.splitext(self.gdb_name)[1] != '.gdb':
-        #     gdb_name = self.gdb_name + '.gdb'
-        # else:
-        #     gdb_name = self.gdb_name
-
         if not self.division or self.division == "":
             targetstring = "%s" % self.tgt_str
         else:
