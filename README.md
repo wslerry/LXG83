@@ -1,6 +1,4 @@
-# LXG83
-
-# LXG PRO : Migration & Replication
+# LXG 83: Migration & Replication
 
 ## Build and installation
 
