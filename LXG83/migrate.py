@@ -58,7 +58,7 @@ class SDE2GDB:
         elif source_ext == '.gdb' or source_ext == '.GDB':
             src_type = "GDB"
         else:
-            src_type = "IP"
+            pass
 
         if src_type == "MDB":
             src = self.sde
@@ -68,14 +68,12 @@ class SDE2GDB:
             src = self.sde
             if not gp.Exists(src):
                 sys.exit('GDB not exist, system exit...')
-        elif src_type == "IP":
+        else:
             src = os.path.join(os.environ['USERPROFILE'],
                                'AppData\\Roaming\\ESRI\\ArcCatalog',
                                "Connection to %s.sde" % self.sde)
             if not gp.Exists(src):
                 sys.exit('SDE not exist, system exit...')
-        else:
-            sys.exit("Invalid data type. System exit...")
 
         if not self.division or self.division == "":
             targetstring = "%s" % self.tgt_str

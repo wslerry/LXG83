@@ -14,9 +14,9 @@ REM ---------------------------------------
 
 set "sde_connection=10.17.106.208"
 set "output_folder=C:\LXG\V2\LXG83\test"
-set "gdb_filename=HQ_PLIS.gdb"
+set "gdb_filename=HQ_GAZETTE.gdb"
 set "division=HQ"
-set "lasis_type=PLIS"
+set "lasis_type=GAZETTE"
 
 REM ---------------------------------------
 
