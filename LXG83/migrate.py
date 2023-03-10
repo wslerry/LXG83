@@ -58,10 +58,7 @@ class SDE2GDB:
         elif source_ext == '.gdb' or source_ext == '.GDB':
             src_type = "GDB"
         else:
-            if is_valid_ip(self.sde):
-                src_type = "IP"
-            else:
-                sys.exit("Invalid IP, system exit...")
+            src_type = "IP"
 
         if src_type == "MDB":
             src = self.sde
