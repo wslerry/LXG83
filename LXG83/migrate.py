@@ -108,13 +108,6 @@ class SDE2GDB:
         except Exception:
             gp.AddError(Exception)
 
-        # if not gp.Exists(output_personal_gdb):
-        #     _, ext = os.path.splitext(output_personal_gdb)
-        #     if ext == '.mdb':
-        #         gp.CreatePersonalGDB_management(self.out_dir, self.gdb_name)
-        #     if ext == '.gdb':
-        #         gp.CreateFileGDB_management(self.out_dir, self.gdb_name)
-
         gp.workspace = src
 
         datasets = gp93.ListDatasets("*%s*" % targetstring, "feature")
@@ -170,7 +163,6 @@ class SDE2GDB:
         elif self.tgt_str != "CMS":
             gp.workspace = output_personal_gdb
             datasets = gp93.ListDatasets("", "feature")
-            # annos = [fc for fc in (gp93.ListFeatureClasses("", "Annotation", ds) for ds in datasets)]
             idx = 0
             for ds in datasets:
                 for _ in gp93.ListFeatureClasses("", "Annotation", ds):
