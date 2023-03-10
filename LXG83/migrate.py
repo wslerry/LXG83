@@ -1,7 +1,7 @@
 import os
 import sys
 import re
-from .utils import progressbar, is_valid_ip
+from .utils import progressbar
 
 
 if os.path.isdir(r"C:\Program Files (x86)\ArcGIS\Bin"):
@@ -54,26 +54,28 @@ class SDE2GDB:
         _, source_ext = os.path.splitext(self.sde)
 
         if source_ext == '.mdb' or source_ext == '.MDB':
-            src_type = "MDB"
+            self.src_type = "MDB"
         elif source_ext == '.gdb' or source_ext == '.GDB':
-            src_type = "GDB"
+            self.src_type = "GDB"
         else:
-            pass
+            self.src_type = "IP"
 
-        if src_type == "MDB":
+        if self.src_type == "MDB":
             src = self.sde
             if not gp.Exists(src):
                 sys.exit('MDB not exist, system exit...')
-        elif src_type == "GDB":
+        elif self.src_type == "GDB":
             src = self.sde
             if not gp.Exists(src):
                 sys.exit('GDB not exist, system exit...')
-        else:
+        elif self.src_type == "IP":
             src = os.path.join(os.environ['USERPROFILE'],
                                'AppData\\Roaming\\ESRI\\ArcCatalog',
                                "Connection to %s.sde" % self.sde)
             if not gp.Exists(src):
                 sys.exit('SDE not exist, system exit...')
+        else:
+            sys.exit('Invalid format, system exit...')
 
         if not self.division or self.division == "":
             targetstring = "%s" % self.tgt_str
@@ -105,26 +107,26 @@ class SDE2GDB:
 
         gp.workspace = src
 
-        datasets = gp93.ListDatasets("*%s*" % targetstring, "feature")
+        datasets = gp93.ListDatasets("*%s*%s*" % (self.division, self.tgt_str), "feature")
+        # datasets = gp93.ListDatasets("*", "feature")
         pbar = progressbar(datasets, prefix='SDE2GDB :')
 
-        if source_ext == '.sde' or source_ext == '.SDE':
+        if self.src_type == "IP":
             for ds in pbar:
                 if re.search(targetstring, ds):
                     if re.search('SDE.', ds):
-                        if re.search('SDE.', ds):
-                            dsname = '%s%s' % (self.prefix, new_name('SDE.', ds))
-                        elif re.search('sde.', ds):
-                            dsname = '%s%s' % (self.prefix, new_name('sde.', ds))
-                        else:
-                            dsname = gp.ValidateTableName(ds, output_personal_gdb)
-                            dsname = '%s%s' % (self.prefix, dsname)
-                        try:
-                            gp.Copy_management(ds, os.path.join(output_personal_gdb, dsname), 'dataset')
-                            gp.DefineProjection_management(os.path.join(output_personal_gdb, dsname), self.crs)
-                        except Exception:
-                            gp.GetMessages(2)
-                            gp.AddError(Exception)
+                        dsname = '%s%s' % (self.prefix, new_name('SDE.', ds))
+                    elif re.search('sde.', ds):
+                        dsname = '%s%s' % (self.prefix, new_name('sde.', ds))
+                    else:
+                        dsname = gp.ValidateTableName(ds, output_personal_gdb)
+                        dsname = '%s%s' % (self.prefix, dsname)
+                    try:
+                        gp.Copy_management(ds, os.path.join(output_personal_gdb, dsname), 'dataset')
+                        gp.DefineProjection_management(os.path.join(output_personal_gdb, dsname), self.crs)
+                    except Exception:
+                        gp.GetMessages(2)
+                        gp.AddError(Exception)
         else:
             for ds in pbar:
                 if re.search(targetstring, ds):
@@ -137,11 +139,11 @@ class SDE2GDB:
                         gp.GetMessages(2)
                         gp.AddError(Exception)
 
-        if self.tgt_str == "CMS" and self.replication is False:
+        if re.search('CMS', self.tgt_str) and self.replication is False:
             # rename grid layer and upgrade annotation if not use for replication(False) but only for migration
             params = {
                 "migrated_gdb": output_personal_gdb,
-                "prefix": '',
+                "prefix_string": '',
                 "division": self.division,
                 "lasis_application": self.tgt_str
             }
@@ -150,12 +152,21 @@ class SDE2GDB:
 
             params01 = {
                 "migrated_gdb": output_personal_gdb,
-                "prefix": '',
+                "prefix_string": '',
                 "division": self.division
             }
 
             UpgradeAnnotation(**params01)
-        elif self.tgt_str != "CMS":
+        elif re.search('CMS', self.tgt_str) and self.replication is True:
+            # Delete annotation if the geodatabase means to use for replication
+            params02 = {
+                "migrated_gdb": output_personal_gdb,
+                "prefix_string": '',
+                "division": self.division
+            }
+
+            DeleteAnnotation(**params02)
+        elif not re.search('CMS', self.tgt_str):
             gp.workspace = output_personal_gdb
             datasets = gp93.ListDatasets("", "feature")
             idx = 0
@@ -171,27 +182,15 @@ class SDE2GDB:
         else:
             pass
 
-        if self.tgt_str == "CMS" and self.replication is True:
-            # Delete annotation if the geodatabase means to use for replication
-            params02 = {
-                "migrated_gdb": output_personal_gdb,
-                "prefix": '',
-                "division": self.division
-            }
-
-            DeleteAnnotation(**params02)
-        else:
-            pass
-
 
 class RenameGrids:
-    def __init__(self, migrated_gdb, prefix, division, lasis_application):
+    def __init__(self, migrated_gdb, prefix_string, division, lasis_application):
         self.gdb = migrated_gdb
-        self.prefix = prefix
+        self.prefix = prefix_string
         self.div = division
         self.app = lasis_application
 
-        prefix = '' if not self.prefix or self.prefix == "" else '%s_' % self.prefix
+        prefix = "" if not self.prefix or self.prefix == "" else '%s_' % self.prefix
 
         gp.workspace = self.gdb
         datasets = gp93.ListDatasets("", "feature")
@@ -229,7 +228,7 @@ class UpgradeAnnotation:
         self.prefix = prefix_string
         self.div = division
 
-        prefix = '' if not self.prefix or self.prefix == "" else '%s_' % self.prefix
+        prefix = "" if not self.prefix or self.prefix == "" else '%s_' % self.prefix
 
         gp.workspace = self.gdb
         datasets = gp93.ListDatasets("", "feature")
@@ -274,14 +273,16 @@ class UpgradeAnnotation:
 
 
 class DeleteAnnotation:
-    def __init__(self, migrated_gdb, prefix, division):
+    def __init__(self, migrated_gdb, prefix_string, division):
         self.gdb = migrated_gdb
-        self.prefix = prefix
+        self.prefix = prefix_string
         self.div = division
+
+        prefix = "" if not self.prefix or self.prefix == "" else '%s_' % self.prefix
 
         gp.workspace = self.gdb
         datasets = gp93.ListDatasets("", "feature")
-        pbar = progressbar(datasets, prefix='Upgrade Annotation :')
+        pbar = progressbar(datasets, prefix='Delete Annotation :')
         for ds in pbar:
             features = gp93.ListFeatureClasses("", "All", ds)
             for feat in features:
