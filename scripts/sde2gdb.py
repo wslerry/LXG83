@@ -19,5 +19,5 @@ if __name__ == "__main__":
             division=division,
             target_string=lasis_type,
             prefix="",
-            reference=False
+            reference=True
             )

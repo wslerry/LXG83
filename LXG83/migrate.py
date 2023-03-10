@@ -55,7 +55,7 @@ class SDE2GDB:
 
         if source_ext == '.mdb' or source_ext == '.MDB':
             src_type = "MDB"
-        elif source_ext != '.gdb' or source_ext != '.GDB':
+        elif source_ext == '.gdb' or source_ext == '.GDB':
             src_type = "GDB"
         else:
             if is_valid_ip(self.sde):
