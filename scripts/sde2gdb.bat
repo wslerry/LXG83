@@ -14,8 +14,8 @@ REM ---------------------------------------
 
 set "sde_connection=10.17.106.208"
 set "output_folder=C:\LXG\V2\LXG83\test"
-set "gdb_filename=BTU_CMS.gdb"
-set "division=BTU"
+set "gdb_filename=BTG_CMS.gdb"
+set "division=BTG"
 set "lasis_type=CMS"
 
 REM ---------------------------------------

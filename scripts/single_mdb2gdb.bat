@@ -11,7 +11,7 @@ REM mdb_file - Directory of *.MDB files
 REM output_folder - New directory for output GDB
 REM ---------------------------------------
 
-set "mdb_file=c:/path/to/file.mdb"
+set "mdb_file=C:\Datasets\Smart EIS GIS 202302\BTG_Smart_EIS_Live.mdb"
 set "output_folder=C:\Datasets\Smart_EIS_GIS_202302_GDB"
 
 REM ---------------------------------------

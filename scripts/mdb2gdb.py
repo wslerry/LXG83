@@ -1,5 +1,5 @@
-from LXG83 import MDB2GDB
 import sys
+from LXG83 import MDB2GDB
 sys.path.append(r"C:\Program Files (x86)\ArcGIS\Bin")
 import arcgisscripting
 
@@ -17,4 +17,5 @@ if __name__ == "__main__":
             division=division,
             target_string=target_string,
             prefix="",
-            check_database=False)
+            reference=False
+            )
