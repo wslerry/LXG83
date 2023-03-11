@@ -321,7 +321,7 @@ class MDB2GDB:
         self.div = division
         self.tgt_str = target_string
         self.prefix = prefix
-        self.replication = reference
+        self.reference = reference
 
         filename = os.path.splitext(os.path.basename(self.mdb))[0]
         gdb_name = filename + '.gdb'
@@ -332,7 +332,7 @@ class MDB2GDB:
                 self.div,
                 self.tgt_str,
                 self.prefix,
-                self.replication)
+                self.reference)
 
 
 class GDB2GDB:
@@ -344,7 +344,7 @@ class GDB2GDB:
         self.div = division
         self.tgt_str = target_string
         self.prefix = prefix
-        self.replication = reference
+        self.reference = reference
 
         filename = os.path.splitext(os.path.basename(self.gdb))[0]
         gdb_name = filename + '.gdb'
@@ -355,5 +355,5 @@ class GDB2GDB:
                 self.div,
                 self.tgt_str,
                 self.prefix,
-                self.replication)
+                self.reference)
 
