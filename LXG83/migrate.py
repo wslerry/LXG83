@@ -1,7 +1,7 @@
 import os
 import sys
 import re
-from .utils import progressbar
+from .utils import progressbar, is_valid_ip
 
 
 if os.path.isdir(r"C:\Program Files (x86)\ArcGIS\Bin"):
@@ -55,25 +55,15 @@ class SDE2GDB:
 
         if source_ext == '.mdb' or source_ext == '.MDB':
             self.src_type = "MDB"
+            src = self.sde
         elif source_ext == '.gdb' or source_ext == '.GDB':
             self.src_type = "GDB"
-        else:
+            src = self.sde
+        elif is_valid_ip(self.sde):
             self.src_type = "IP"
-
-        if self.src_type == "MDB":
-            src = self.sde
-            if not gp.Exists(src):
-                sys.exit('MDB not exist, system exit...')
-        elif self.src_type == "GDB":
-            src = self.sde
-            if not gp.Exists(src):
-                sys.exit('GDB not exist, system exit...')
-        elif self.src_type == "IP":
             src = os.path.join(os.environ['USERPROFILE'],
                                'AppData\\Roaming\\ESRI\\ArcCatalog',
                                "Connection to %s.sde" % self.sde)
-            if not gp.Exists(src):
-                sys.exit('SDE not exist, system exit...')
         else:
             sys.exit('Invalid format, system exit...')
 
@@ -111,7 +101,7 @@ class SDE2GDB:
         # datasets = gp93.ListDatasets("*", "feature")
         pbar = progressbar(datasets, prefix='SDE2GDB :')
 
-        if self.src_type != "MDB" or self.src_type != "GDB":
+        if self.src_type == "IP":
             for ds in pbar:
                 if re.search(targetstring, ds):
                     if re.search('SDE.', ds):
