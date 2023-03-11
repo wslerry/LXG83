@@ -8,7 +8,8 @@ dist
 
 LXG83/*.pyc
 
-*.bat
-*.sh
+git*.bat
+git*.sh
+setup.bat
 *.zip
 *.7z
