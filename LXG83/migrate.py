@@ -111,7 +111,7 @@ class SDE2GDB:
         # datasets = gp93.ListDatasets("*", "feature")
         pbar = progressbar(datasets, prefix='SDE2GDB :')
 
-        if self.src_type == "IP":
+        if self.src_type != "MDB" or self.src_type != "GDB":
             for ds in pbar:
                 if re.search(targetstring, ds):
                     if re.search('SDE.', ds):
@@ -168,15 +168,15 @@ class SDE2GDB:
             DeleteAnnotation(**params02)
         elif not re.search('CMS', self.tgt_str):
             gp.workspace = output_personal_gdb
-            datasets = gp93.ListDatasets("", "feature")
+            datasets = gp93.ListDatasets("*", "feature")
             idx = 0
             for ds in datasets:
-                for _ in gp93.ListFeatureClasses("", "Annotation", ds):
+                for _ in gp93.ListFeatureClasses("*", "Annotation", ds):
                     idx += 1
             if idx > 0:
                 pbar = progressbar(datasets, prefix='Upgrade Annotation :')
                 for ds in pbar:
-                    features = gp93.ListFeatureClasses("", "Annotation", ds)
+                    features = gp93.ListFeatureClasses("*", "Annotation", ds)
                     for feat in features:
                         gp.UpdateAnnotation_management(feat, "POPULATE")
         else:
@@ -193,10 +193,10 @@ class RenameGrids:
         prefix = "" if not self.prefix or self.prefix == "" else '%s_' % self.prefix
 
         gp.workspace = self.gdb
-        datasets = gp93.ListDatasets("", "feature")
+        datasets = gp93.ListDatasets("*GRIDS", "feature")
         pbar = progressbar(datasets, prefix='Rename :')
         for ds in pbar:
-            features = gp93.ListFeatureClasses("", "All", ds)
+            features = gp93.ListFeatureClasses("", "Polyline", ds)
             for feat in features:
                 if re.search('SDE.', feat):
                     featname = '%s%s' % (prefix, new_name('SDE.', feat))
@@ -231,10 +231,10 @@ class UpgradeAnnotation:
         prefix = "" if not self.prefix or self.prefix == "" else '%s_' % self.prefix
 
         gp.workspace = self.gdb
-        datasets = gp93.ListDatasets("", "feature")
+        datasets = gp93.ListDatasets("*", "feature")
         pbar = progressbar(datasets, prefix='Upgrade Annotation :')
         for ds in pbar:
-            features = gp93.ListFeatureClasses("", "All", ds)
+            features = gp93.ListFeatureClasses("", "Annotation", ds)
             idx = 0
             for feat in features:
                 if re.search('SDE.', feat):
@@ -281,10 +281,10 @@ class DeleteAnnotation:
         prefix = "" if not self.prefix or self.prefix == "" else '%s_' % self.prefix
 
         gp.workspace = self.gdb
-        datasets = gp93.ListDatasets("", "feature")
+        datasets = gp93.ListDatasets("*", "feature")
         pbar = progressbar(datasets, prefix='Delete Annotation :')
         for ds in pbar:
-            features = gp93.ListFeatureClasses("", "All", ds)
+            features = gp93.ListFeatureClasses("", "Annotation", ds)
             for feat in features:
                 if re.search('SDE.', feat):
                     featname = '%s%s' % (prefix, new_name('SDE.', feat))
